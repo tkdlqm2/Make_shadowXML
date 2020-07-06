@@ -263,24 +263,4 @@ int main(int args, char* argv[] )
         rpc_generatetoaddress(target_address, admin, wallet_array[i]);
     }
 
-    // for(int i=0; i<row; i++){
-    //     strcpy(rpc_array[i], strcat("1000",itoa(j)));
-    //     printf("%s \n", rpc_array[i]);
-    //     j ++;
-    // }
-
-//    rpc_addnode(IP, rpc_ID, node);
-//    rpc_generatetoaddress(wallet_address, _IP, rpc_ID);
-
-    // get wallet address
-    // rpc_getnewaddress(argv[1], argv[2], wallet_address);
-
-    // start mining
-    // rpc_generatetoaddress(argv[1], argv[2], wallet_address);
-
-
-    // check result
-    // rpc_getblockchaininfo(argv[1], argv[2]);
-
-//    rpc_getpeerinfo(IP, rpc_ID);
 }
