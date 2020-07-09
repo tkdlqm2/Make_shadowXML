@@ -41,12 +41,10 @@ def set_bitcoind(node_count,f):
         print(port_argv)
         comm = "\"-debug -listen=1 -testnet -datadir=data/bcdnode" + str(i) + " -noconnect -rpcuser=a -rpcpassword=1234 -rpcport=" + str(rpc_argv) + " -port=" + str(port_argv) + " "
         secondline = second_line + comm
-
-        for i in range(1,node_count + 2):
-            comm = "-rpcallowip=11.0.0." + str(i) + " "
-            secondline = secondline + comm
-            comm = "-rpcbind=11.0.0." + str(i) + " "
-            secondline = secondline + comm
+        comm = "-rpcallowip=11.0.0." + str(i) + "/0 "
+        secondline = secondline + comm
+        comm = "-rpcbind=11.0.0." + str(i) + " "
+        secondline = secondline + comm
 
         secondline = secondline + "\"/>\n"
         f.write(secondline)
@@ -74,6 +72,35 @@ def make_datadir(node_count):
         command = "mv " + bcd + " data"
         exec_shell_cmd_system(command)
 
+def make_result_rpc(node_count, f, run_time):
+    target_time = run_time - 2
+    IP_format = "11.0.0."
+    for i in range(1,node_count + 1):
+        port_format = 10000 + i
+
+        first_line = "\t<node id="
+        comm = "\"result" +str(i) + "\""
+        first_line = first_line + comm + ">\n"
+
+        second_line = "\t\t<application plugin=\"rpc2\" "
+        comm = "time=\"" + str(target_time) +"\" arguments="
+        second_line = second_line + comm
+
+        comm = "\""
+        second_line = second_line + comm
+
+        comm = IP_format + str(i) + ":"
+        second_line = second_line + comm
+        comm = str(port_format)
+        second_line = second_line + comm + "\""
+        second_line = second_line + "/>\n"
+
+        last_line = "\t</node>\n\n"
+
+        f.write(first_line)
+        f.write(second_line)
+        f.write(last_line)
+
 if __name__ == '__main__':
 
     node_count = int(sys.argv[1]) # node counts
@@ -84,6 +111,7 @@ if __name__ == '__main__':
     f.write(runtime_option(sys.argv[2])) # set runtime_option
     set_bitcoind(node_count,f)
     set_rpc(node_count,f)
+    make_result_rpc(node_count, f, int(sys.argv[2]))
     f.write("</shadow>")
     f.close()
     make_datadir(int(sys.argv[1]))
